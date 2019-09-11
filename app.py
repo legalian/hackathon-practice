@@ -14,21 +14,30 @@ def nice():
 	return "nice"
 
 
+elements = []
+
+
+
 @app.route('/elements',methods=["GET","POST"])
 def elements():
 	if request.method == "GET":
-		return ""
+		return elements
 	elif request.method == "POST":
-		return ""
+		elements.append(request.json)
+		return elements
+
 
 @app.route('/elements/<int:id>',methods=["GET","PUT","DELETE"])
 def element(id):
 	if request.method == "GET":
-		return ""
+		return elements[id]
 	elif request.method == "PUT":
-		return ""
+		elements[id] = request.json[id]
+		return elements[id]
 	elif request.method == "DELETE":
-		return ""
+		elements.remove(id)
+		return "OK"
+
 
 
 
