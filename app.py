@@ -16,8 +16,6 @@ def nice():
 
 elements = []
 
-
-
 @app.route('/elements',methods=["GET","POST"])
 def elements():
 	if request.method == "GET":
@@ -38,7 +36,9 @@ def element(id):
 		elements.remove(id)
 		return "OK"
 
-
+@app.route('/push_template')
+def push():
+	return render_template('/push_template.html')
 
 
 
