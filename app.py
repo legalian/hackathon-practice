@@ -17,18 +17,18 @@ def nice():
 @app.route('/elements',methods=["GET","POST"])
 def elements():
 	if request.method == "GET":
-
+		return ""
 	elif request.method == "POST":
-
+		return ""
 
 @app.route('/elements/<int:id>',methods=["GET","PUT","DELETE"])
 def element(id):
 	if request.method == "GET":
-
+		return ""
 	elif request.method == "PUT":
-
+		return ""
 	elif request.method == "DELETE":
-		
+		return ""
 
 
 
