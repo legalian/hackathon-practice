@@ -1,0 +1,38 @@
+<html>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<body>
+		<div>
+			<p data-bind="text: firsName"></p>
+			<p data-bind="text: lastName"></p>
+			<input data-bind="value: firstName"
+		</div>
+
+
+
+		<script>
+
+			function viewModel(){
+				var self = this;
+				self.firstName = ko.observable("John");
+				self.lastName  = ko.observable("Doe");
+
+				self.getInitialData = function() {
+					$.ajax({
+						url:"/elements",
+						type:"GET",
+						success: function(res) {
+							console.log(res);
+						}
+
+
+					})
+				}
+
+			}
+
+		</script>
+	</body>
+
+
+</html>
