@@ -19,67 +19,67 @@
 			<ul data-bind="foreach: tasks, visible : tasks().length > 0">
 				<!-- <li data-bind="text: title"></li> -->
 				<input data-bind="value: title, disable: isDone" />
-				<button type="checkbox" data-bind="click: $parent.removeTask">Delete</button><br>
+				<button data-bind="click: $parent.removeTask">Delete</button><br>
 			</ul>
 		</div>
 
 		<script>
 			function Task(data){
-				this.title = ko.observable(data.title);
-				this.isDone= ko.observable(data.isDone);
+				var self = this;
+				self.title = ko.observable(data.title);
+				self.isDone= ko.observable(data.isDone);
+				self.toJSON= function(){
+					return {"title": self.title(), "isDone": self.isDone()}
+				}
 			}
 
 
 			function AppViewModel() {
-				var self = this;
-				this.firstName = ko.observable("Bert");
-				this.lastName = ko.observable("Bertington");
-				this.fullName = ko.computed( function(){
+				var self =	this;
+				self.firstName = ko.observable("Bert");
+				self.lastName = ko.observable("Bertington");
+				self.fullName = ko.computed( function(){
     				return self.firstName() + " " + self.lastName();
     			});
-    			this.setnametobull = function() {
+    			self.setnametobull = function() {
         			self.firstName("bull");
     			};
-    			this.capitalizeLastName = function() {
-        			var currentVal = this.lastName();
-        			this.lastName(currentVal.toUpperCase());
+    			self.capitalizeLastName = function() {
+        			var currentVal =	self.lastName();
+        			self.lastName(currentVal.toUpperCase());
     			};
     			//tutorial code ^^ 
     			//real code VV
     			self.newTaskText = ko.observable();
     			self.tasks = ko.observableArray([]);
     			self.addTask = function(){
-    				self.tasks.push(new Task({title: this.newTaskText()}))
+    				var newTask = new Task({title: self.newTaskText()});
+    				self.tasks.push(newTask);
     				self.newTaskText("");
-    			}
-    			self.removeTask = function(task){ self.tasks.remove(task)}
-    			self.saveTasks = function(){
     				$.ajax("/elements", {
-    					data: ko.toJSON({tasks: self.tasks}),
-    					type: "post", 
+    					data: ko.toJSON(newTask.toJSON()),
+    					type: "POST",
     					contentType: "application/json",
-    					success: function(result){alert(result)}
+    					success: function(result){console.log(result)}
     				});
     			}
 
+    			self.removeTask = function(task){ 
+    				$.ajax("/elements", {})
+    			}
+				$.ajax("/elements", {
+					type: "GET", 
+					success: function(result){
+						self.tasks(result.payload.map(function(item){
+							return new Task(item);
+						}));
+						console.log(result)
+					}
+				});
 
 
 			}
-			ko.applyBindings(new AppViewModel());
-
-				// self.getInitialData = function() {
-				// 	$.ajax({
-				// 		url:"/elements",
-				// 		type:"GET",
-				// 		success: function(res) {
-				// 			console.log(res);
-				// 		}
-
-
-				// 	})
-				// }
-
-			
+			ko.applyBindings(new AppViewModel());			
 
 		</script>
 	</body>

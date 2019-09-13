@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os
 app = Flask(__name__)
 app.jinja_env.auto_reload = True
@@ -16,13 +16,15 @@ def nice():
 
 elements = []
 
+
+
 @app.route('/elements',methods=["GET","POST"])
-def elements():
+def element_all():
 	if request.method == "GET":
-		return elements
+		return {'payload':elements}
 	elif request.method == "POST":
 		elements.append(request.json)
-		return elements
+		return {'payload':elements}
 
 
 @app.route('/elements/<int:id>',methods=["GET","PUT","DELETE"])
@@ -40,6 +42,9 @@ def element(id):
 def push():
 	return render_template('/push_template.html')
 
+@app.route('/application/json')
+def jspage():
+	return elements;
 
 
 @app.route('/debug')
