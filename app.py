@@ -18,9 +18,12 @@ elements = []
 
 
 
+
+
 @app.route('/elements',methods=["GET","POST"])
 def element_all():
 	if request.method == "GET":
+		print(elements)
 		return {'payload':elements}
 	elif request.method == "POST":
 		elements.append(request.json)
@@ -32,10 +35,10 @@ def element(id):
 	if request.method == "GET":
 		return elements[id]
 	elif request.method == "PUT":
-		elements[id] = request.json[id]
+		elements[id] = request.json
 		return elements[id]
 	elif request.method == "DELETE":
-		elements.remove(id)
+		del elements[id]
 		return "OK"
 
 @app.route('/push_template')
